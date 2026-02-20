@@ -1,6 +1,6 @@
 "use client";
 
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import {
     Card,
@@ -16,7 +16,7 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/line-chart";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Activity } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 const chartConfig = {
     calories: {
@@ -98,6 +98,7 @@ export function DashboardChart({ data }: DashboardChartProps) {
     );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomizedDot = (props: any) => {
     const { cx, cy, stroke, payload } = props;
 

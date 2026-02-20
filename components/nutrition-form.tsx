@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { Wand2, Search, Check, Trash2 } from 'lucide-react'
+import { Wand2, Search, Trash2 } from 'lucide-react'
 import {
     Table,
     TableBody,
@@ -21,19 +21,20 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { cn } from '@/lib/utils'
 import { useDebounce } from 'use-debounce';
 
 export function NutritionForm() {
     const [loading, setLoading] = useState(false)
     const [aiLoading, setAiLoading] = useState(false)
     const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [meals, setMeals] = useState<any[]>([])
 
     // Autocomplete State
     const [showResults, setShowResults] = useState(false)
     const [foodDesc, setFoodDesc] = useState('')
     const [debouncedSearchTerm] = useDebounce(foodDesc, 300)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [searchResults, setSearchResults] = useState<any[]>([])
 
     // Form States
@@ -66,6 +67,7 @@ export function NutritionForm() {
         fetchFoods()
     }, [debouncedSearchTerm])
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSelectFood = (item: any) => {
         setFoodDesc(item.name)
         setCalories(item.calories?.toString() || '0')

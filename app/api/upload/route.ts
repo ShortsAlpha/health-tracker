@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
         if (testError) throw new Error('Failed to save test record: ' + testError.message)
 
         // 4b. Create Markers
-        const markersToInsert = analysis.markers.map((marker: any) => ({
+        const markersToInsert = analysis.markers.map((marker: { marker_name: string, value: string, unit: string, reference_range: string }) => ({
             test_id: testData.id,
             marker_name: marker.marker_name,
             value: marker.value,
@@ -55,8 +55,8 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ success: true, id: testData.id })
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Upload error:', error)
-        return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 })
+        return NextResponse.json({ error: error instanceof Error ? error.message : 'Internal Server Error' }, { status: 500 })
     }
 }

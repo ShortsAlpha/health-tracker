@@ -11,6 +11,7 @@ import {
 } from 'recharts'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function WeightChart({ data }: { data: any[] }) {
     // Format data for chart
     const validData = data.filter(item => item.weight).map(item => ({

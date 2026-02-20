@@ -27,7 +27,7 @@ export function WeeklyUpdateView() {
             }
             setParsedData(data)
             toast.success(`Successfully parsed ${data.length} days of data.`)
-        } catch (e) {
+        } catch {
             toast.error("An error occurred during parsing.")
         }
     }
@@ -48,8 +48,8 @@ export function WeeklyUpdateView() {
             } else {
                 toast.error(`Error saving data: ${result.error}`)
             }
-        } catch (e: any) {
-            toast.error(`Unexpected error: ${e.message}`)
+        } catch (e: unknown) {
+            toast.error(`Unexpected error: ${e instanceof Error ? e.message : 'Unknown'}`)
         } finally {
             setIsSaving(false)
         }

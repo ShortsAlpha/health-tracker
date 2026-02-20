@@ -1,25 +1,25 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getCalorieStats, getBiometricStats, getStreak, Period } from '@/actions/dashboard'
+import { getCalorieStats, getBiometricStats, Period } from '@/actions/dashboard'
 import { CalorieChart } from './calorie-chart'
 import { BiometricsChart } from './biometrics-chart'
-import { StreakCard } from './streak-card'
 import { TodaysFood } from './todays-food'
 import { RecentWorkouts } from './recent-workouts'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from '@/components/ui/skeleton'
 
 export function DashboardView() {
-    const [streak, setStreak] = useState<number>(0)
 
     // Calorie State
     const [calPeriod, setCalPeriod] = useState<Period>('weekly')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [calData, setCalData] = useState<any[]>([])
     const [calLoading, setCalLoading] = useState(true)
 
     // Bio State
     const [bioPeriod, setBioPeriod] = useState<Period>('weekly')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [bioData, setBioData] = useState<any[]>([])
     const [bioLoading, setBioLoading] = useState(true)
 
@@ -84,7 +84,7 @@ export function DashboardView() {
                     {bioLoading ? (
                         <Skeleton className="h-[350px] w-full rounded-xl" />
                     ) : (
-                        <BiometricsChart data={bioData} period={bioPeriod} />
+                        <BiometricsChart data={bioData} />
                     )}
 
                     <RecentWorkouts />

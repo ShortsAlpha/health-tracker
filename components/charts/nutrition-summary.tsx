@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function NutritionSummary({ data }: { data: any[] }) {
     // Calculate averages
     const count = data.length || 1

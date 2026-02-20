@@ -8,14 +8,12 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Period } from "@/actions/dashboard"
 
 interface BiometricsChartProps {
     data: { date: string, label: string, weight?: number, fat_rate?: number, muscle_rate?: number }[]
-    period: Period
 }
 
-export function BiometricsChart({ data, period }: BiometricsChartProps) {
+export function BiometricsChart({ data }: BiometricsChartProps) {
     const COLOR_WEIGHT = "#10b981" // Emerald 500 (Green)
     const COLOR_FAT = "#f97316"    // Orange
     const COLOR_MUSCLE = "#3b82f6" // Blue
@@ -30,7 +28,7 @@ export function BiometricsChart({ data, period }: BiometricsChartProps) {
                 <div className="h-[300px] w-full">
                     {(!data || data.length === 0) ? (
                         <div className="flex h-full items-center justify-center text-muted-foreground">
-                            No biometric data available for this period. Try switching to 'History'.
+                            No biometric data available for this period. Try switching to &apos;History&apos;.
                         </div>
                     ) : (
                         <ResponsiveContainer width="100%" height="100%">

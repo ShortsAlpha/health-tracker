@@ -20,6 +20,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { format, subDays, addDays, isSameDay } from 'date-fns'
 
 export function TodaysFood() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [meals, setMeals] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [selectedDate, setSelectedDate] = useState<Date>(new Date())
@@ -35,6 +36,7 @@ export function TodaysFood() {
 
     useEffect(() => {
         loadMeals()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dateStr])
 
     const handleDelete = async (id: number) => {

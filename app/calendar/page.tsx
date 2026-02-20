@@ -3,7 +3,7 @@
 import * as React from "react"
 import { CalendarTwin } from "@/components/calendar-twin"
 import { getDailySummary, getActiveDates } from "@/actions/calendar"
-import { format, isSameDay } from "date-fns"
+import { format } from "date-fns"
 import {
     Dialog,
     DialogContent,
@@ -27,14 +27,11 @@ export default function CalendarPage() {
     const [date, setDate] = React.useState<Date>()
     const [isOpen, setIsOpen] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [summary, setSummary] = React.useState<any>(null)
     const [activeDates, setActiveDates] = React.useState<string[]>([])
 
-    // Ensure we don't open the sheet immediately on mount if date is technically undefined then set to today by default
-    const [initialLoad, setInitialLoad] = React.useState(true)
-
     React.useEffect(() => {
-        setInitialLoad(false)
         const loadActiveDates = async () => {
             const dates = await getActiveDates()
             setActiveDates(dates)
@@ -136,7 +133,7 @@ export default function CalendarPage() {
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
-                                                {summary.meals.map((m: any, i: number) => (
+                                                {summary.meals.map((m: { name: string, protein: number, carbs: number, fat: number, calories: number }, i: number) => (
                                                     <TableRow key={i} className="hover:bg-transparent">
                                                         <TableCell className="py-2 text-sm font-medium">{m.name}</TableCell>
                                                         <TableCell className="py-2 text-right text-xs text-muted-foreground">{m.protein}g</TableCell>
@@ -179,7 +176,7 @@ export default function CalendarPage() {
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
-                                                {summary.workouts.map((w: any, i: number) => (
+                                                {summary.workouts.map((w: { name: string, duration: number }, i: number) => (
                                                     <TableRow key={i} className="hover:bg-transparent">
                                                         <TableCell className="py-2 text-sm font-medium">{w.name}</TableCell>
                                                         <TableCell className="py-2 text-right">{w.duration}</TableCell>

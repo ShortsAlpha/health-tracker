@@ -19,7 +19,7 @@ export default async function EntryPage() {
                     <div className="border rounded-xl p-4 bg-card shadow-sm">
                         <h3 className="text-lg font-semibold mb-4 ml-2">Recent Trends</h3>
                         <div className="h-[300px]">
-                            <BiometricsChart data={biometricData} period="monthly" />
+                            <BiometricsChart data={biometricData} />
                         </div>
                     </div>
                 </div>

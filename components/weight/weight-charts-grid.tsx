@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { getBiometricStats, Period } from '@/actions/dashboard'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export function WeightChartsGrid() {
     const [period, setPeriod] = useState<Period>('monthly')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [data, setData] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
 

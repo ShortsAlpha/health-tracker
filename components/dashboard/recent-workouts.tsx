@@ -18,6 +18,7 @@ import { toast } from 'sonner'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export function RecentWorkouts() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [workouts, setWorkouts] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
 

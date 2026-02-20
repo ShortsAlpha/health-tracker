@@ -4,9 +4,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
 export async function analyzeBloodTest(text: string) {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
-    const prompt = `
+  const prompt = `
     You are an expert medical data analyst. Your task is to extract blood test results from the provided text.
     
     Extract the following information for EACH test marker found:
@@ -40,17 +40,17 @@ export async function analyzeBloodTest(text: string) {
     ${text}
   `
 
-    const result = await model.generateContent(prompt)
-    const response = await result.response
-    const textResponse = response.text()
+  const result = await model.generateContent(prompt)
+  const response = await result.response
+  const textResponse = response.text()
 
-    // Clean up markdown code blocks if present
-    const cleanedText = textResponse.replace(/```json/g, '').replace(/```/g, '').trim()
+  // Clean up markdown code blocks if present
+  const cleanedText = textResponse.replace(/```json/g, '').replace(/```/g, '').trim()
 
-    try {
-        return JSON.parse(cleanedText)
-    } catch (e) {
-        console.error('Failed to parse Gemini response:', textResponse)
-        throw new Error('AI analysis failed to produce valid JSON')
-    }
+  try {
+    return JSON.parse(cleanedText)
+  } catch {
+    console.error('Failed to parse Gemini response:', textResponse)
+    throw new Error('AI analysis failed to produce valid JSON')
+  }
 }
