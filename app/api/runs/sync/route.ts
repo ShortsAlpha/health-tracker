@@ -16,30 +16,37 @@ export async function POST(request: Request) {
         }
 
         // 2. Parse Body
-        const data = await request.json();
+        const body = await request.json();
+        
+        // Ensure it's an array for batch insertion
+        const runs = Array.isArray(body) ? body : [body];
 
-        // 3. Insert into Supabase
+        // 3. Map to Supabase format and cast types safely
+        const insertData = runs.map((data: any) => ({
+            date: data.date,
+            duration: Number(data.duration) || 0,
+            distance: Number(data.distance) || 0,
+            calories: data.calories ? Math.round(Number(data.calories)) : null,
+            average_heart_rate: data.averageHeartRate ? Math.round(Number(data.averageHeartRate)) : null,
+            steps: data.totalSteps ? Math.round(Number(data.totalSteps)) : null,
+            route_data: data.routeData || [] // JSON Array of coordinates
+        }));
+
+        // 4. Insert into Supabase
         const { error } = await supabase
             .from('runs')
-            .insert([
-                {
-                    date: data.date,
-                    duration: data.duration,
-                    distance: data.distance,
-                    calories: data.calories,
-                    average_heart_rate: data.averageHeartRate,
-                    steps: data.totalSteps,
-                    route_data: data.routeData // JSON Array of coordinates
-                }
-            ]);
+            .insert(insertData);
 
-        if (error) throw error;
+        if (error) {
+            console.error('Supabase Insert Error:', error);
+            return NextResponse.json({ error: error.message, details: error }, { status: 500 });
+        }
 
-        return NextResponse.json({ success: true });
-    } catch (error: unknown) {
+        return NextResponse.json({ success: true, inserted: insertData.length });
+    } catch (error: any) {
         console.error('Run Sync Error:', error)
         return NextResponse.json(
-            { error: error instanceof Error ? error.message : 'Internal Server Error' },
+            { error: error?.message || 'Internal Server Error', fullError: error },
             { status: 500 }
         );
     }
