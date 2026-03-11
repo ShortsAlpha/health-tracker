@@ -22,15 +22,18 @@ export async function POST(request: Request) {
         const runs = Array.isArray(body) ? body : [body];
 
         // 3. Map to Supabase format and cast types safely
-        const insertData = runs.map((data: any) => ({
-            date: data.date,
-            duration: Number(data.duration) || 0,
-            distance: Number(data.distance) || 0,
-            calories: data.calories ? Math.round(Number(data.calories)) : null,
-            average_heart_rate: data.averageHeartRate ? Math.round(Number(data.averageHeartRate)) : null,
-            steps: data.totalSteps ? Math.round(Number(data.totalSteps)) : null,
-            route_data: data.routeData || [] // JSON Array of coordinates
-        }));
+        const insertData = runs.map((data: Record<string, unknown> | null) => {
+            if (!data) return null;
+            return {
+                date: data.date as string,
+                duration: Number(data.duration) || 0,
+                distance: Number(data.distance) || 0,
+                calories: data.calories ? Math.round(Number(data.calories)) : null,
+                average_heart_rate: data.averageHeartRate ? Math.round(Number(data.averageHeartRate)) : null,
+                steps: data.totalSteps ? Math.round(Number(data.totalSteps)) : null,
+                route_data: data.routeData || [] // JSON Array of coordinates
+            };
+        }).filter(Boolean);
 
         // 4. Insert into Supabase
         const { error } = await supabase
@@ -43,10 +46,10 @@ export async function POST(request: Request) {
         }
 
         return NextResponse.json({ success: true, inserted: insertData.length });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Run Sync Error:', error)
         return NextResponse.json(
-            { error: error?.message || 'Internal Server Error', fullError: error },
+            { error: error instanceof Error ? error.message : 'Internal Server Error', fullError: error },
             { status: 500 }
         );
     }
