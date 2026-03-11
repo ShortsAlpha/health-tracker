@@ -9,6 +9,19 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { format } from "date-fns"
+import { DeleteRunButton } from "@/components/runs/delete-run-button"
+
+function formatDuration(seconds: number) {
+    if (!seconds) return "-";
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (hours > 0) {
+        return `${hours}h ${remainingMinutes}m`;
+    }
+    return `${minutes}m`;
+}
 
 export const dynamic = 'force-dynamic'
 
@@ -37,12 +50,13 @@ export default async function RunsPage() {
                                 <TableHead>Calories</TableHead>
                                 <TableHead>Avg HR</TableHead>
                                 <TableHead>Steps</TableHead>
+                                <TableHead className="w-[50px]"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {runs.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={6} className="text-center h-24 text-muted-foreground">
+                                    <TableCell colSpan={7} className="text-center h-24 text-muted-foreground">
                                         No run data found. Sync from iOS app to see entries here.
                                     </TableCell>
                                 </TableRow>
@@ -52,11 +66,14 @@ export default async function RunsPage() {
                                         <TableCell className="font-medium">
                                             {format(new Date(run.date), 'dd MMM yyyy, HH:mm')}
                                         </TableCell>
-                                        <TableCell>{run.duration} mins</TableCell>
-                                        <TableCell>{run.distance} km</TableCell>
+                                        <TableCell>{formatDuration(Number(run.duration))}</TableCell>
+                                        <TableCell>{(Number(run.distance) / 1000).toFixed(1)} km</TableCell>
                                         <TableCell>{run.calories || '-'} kcal</TableCell>
                                         <TableCell>{run.average_heart_rate || '-'} bpm</TableCell>
                                         <TableCell>{run.steps || '-'}</TableCell>
+                                        <TableCell>
+                                            <DeleteRunButton id={run.id} />
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             )}
