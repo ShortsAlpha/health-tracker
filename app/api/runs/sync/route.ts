@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase (Use service role key as it will bypass RLS for server-to-server sync)
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export async function POST(request: Request) {
     try {
+        // Initialize Supabase inside the handler to prevent build-time errors on Vercel
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
+
         // 1. Basic Security Check
         const apiKey = request.headers.get('x-api-key');
         if (apiKey !== process.env.RUNAI_SYNC_SECRET) {
