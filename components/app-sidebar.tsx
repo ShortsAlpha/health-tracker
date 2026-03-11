@@ -6,6 +6,7 @@ import {
     Command,
     RefreshCw,
     Calendar as CalendarIcon,
+    Activity,
 } from "lucide-react"
 import {
     Sidebar,
@@ -37,6 +38,11 @@ const items = [
         title: "Calendar",
         url: "/calendar",
         icon: CalendarIcon,
+    },
+    {
+        title: "Runs (Beta)",
+        url: "/runs",
+        icon: Activity,
     },
 ]
 
